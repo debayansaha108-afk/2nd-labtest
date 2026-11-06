@@ -1,64 +1,82 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var mMap: GoogleMap
-    private lateinit var tvLocationInfo: TextView
-    private val defaultLocation = LatLng(28.6139, 77.2090) // Default: New Delhi, India
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var progressBar: ProgressBar
+    private lateinit var adapter: PostAdapter
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tvLocationInfo = findViewById(R.id.tv_location_info)
+        // Initialize UI components
+        recyclerView = findViewById(R.id.recycler_view)
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
+        progressBar = findViewById(R.id.progress_bar)
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        // Setup RecyclerView
+        adapter = PostAdapter(emptyList())
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
-        val fabMyLocation = findViewById<FloatingActionButton>(R.id.fab_my_location)
-        fabMyLocation.setOnClickListener {
-            if (::mMap.isInitialized) {
-                // Move camera back to default location with animation
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
-                tvLocationInfo.text = "Centered on New Delhi"
+        // Setup Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        apiService = retrofit.create(ApiService::class.java)
+
+        // Set SwipeRefreshLayout listener
+        swipeRefreshLayout.setOnRefreshListener {
+            fetchData()
+        }
+
+        // Initial Data Fetch
+        progressBar.visibility = View.VISIBLE
+        fetchData()
+    }
+
+    private fun fetchData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiService.getPosts()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful && response.body() != null) {
+                        adapter.updatePosts(response.body()!!)
+                    } else {
+                        Toast.makeText(this@MainActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
+                    }
+                    hideLoading()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    hideLoading()
+                }
             }
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
-     */
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        // Add a marker in New Delhi and move the camera
-        mMap.addMarker(MarkerOptions().position(defaultLocation).title("Marker in New Delhi"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 10f))
-
-        // Set a listener for map clicks to show it's interactive
-        mMap.setOnMapClickListener { latLng ->
-            mMap.clear() // Clear old markers
-            mMap.addMarker(MarkerOptions().position(latLng).title("Custom Marker"))
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-            
-            val formattedLat = String.format("%.4f", latLng.latitude)
-            val formattedLng = String.format("%.4f", latLng.longitude)
-            tvLocationInfo.text = "Tapped: $formattedLat, $formattedLng"
-        }
+    private fun hideLoading() {
+        progressBar.visibility = View.GONE
+        swipeRefreshLayout.isRefreshing = false
     }
 }
