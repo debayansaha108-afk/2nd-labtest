@@ -42,4 +42,7 @@ dependencies {
     // UI Components
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    
+    // Glide for Image Loading
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

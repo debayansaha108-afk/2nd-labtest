@@ -10,36 +10,37 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contacts Manager"
-        android:textSize="28sp"
+        android:text="Web Services Dashboard"
+        android:textSize="26sp"
         android:textStyle="bold"
-        android:layout_marginBottom="40dp" />
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginBottom="12dp"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Explore different HTTP request endpoints"
+        android:textSize="15sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="40dp"
+        android:gravity="center" />
 
     <Button
-        android:id="@+id/btnAddContact"
+        android:id="@+id/btn_fetch_users"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Add Contact"
+        android:text="Fetch Users API"
+        android:textSize="16sp"
+        android:backgroundTint="#4F46E5"
         android:layout_marginBottom="16dp" />
 
     <Button
-        android:id="@+id/btnViewContacts"
+        android:id="@+id/btn_fetch_products"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="View Contacts"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/btnManageContact"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Update/Delete Contact"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/btnPickContact"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Pick Contact (Android 17+)" />
+        android:text="Fetch Products API"
+        android:textSize="16sp"
+        android:backgroundTint="#1E293B" />
 
 </LinearLayout>
