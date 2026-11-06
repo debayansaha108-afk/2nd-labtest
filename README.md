@@ -1,11 +1,9 @@
-# Experiment 11 – Implement Google Maps in Android Studio
+# Experiment 12 – Access Web Services using HTTP Requests in Android
 
 📌 **Description**
-This experiment is developed using Android Studio as part of the Mobile Application Development Lab. It demonstrates the integration of the Google Maps SDK into an Android application. 
+This experiment is developed using Android Studio as part of the Mobile Application Development Lab. It demonstrates how to access web services and consume REST APIs using HTTP requests in an Android application.
 
-The application utilizes a `SupportMapFragment` to display an interactive map. It handles runtime permissions for location and internet access, features custom map markers, animates the camera to specific geographical coordinates, and uses interactive UI overlays to display tapped coordinates.
-
-This experiment provides practical experience with third-party SDK integration, API Key management in the Android Manifest, and location-based services.
+The application utilizes **Retrofit** and **Gson** for seamless HTTP networking and JSON deserialization, combined with **Kotlin Coroutines** for asynchronous background execution. The user interface features a modern Material Design layout with a `RecyclerView`, custom `CardView` items, and a `SwipeRefreshLayout` for pull-to-refresh functionality.
 
 👨‍💻 **Author**
 *   **Name:** Debayan Saha
@@ -13,36 +11,42 @@ This experiment provides practical experience with third-party SDK integration, 
 *   **USN:** 25MCAR0129
 
 🚀 **Features**
-*   Integrates Google Maps SDK for Android.
-*   Displays a full-screen interactive map using `SupportMapFragment`.
-*   Implements `OnMapReadyCallback` for map initialization.
-*   Animates camera movement to predefined and dynamic coordinates.
-*   Adds custom markers on the map upon user interaction.
-*   Displays tapped coordinates in a modern CardView overlay.
-*   Secures Google Maps API Key via `AndroidManifest.xml` metadata.
+*   Performs network HTTP GET requests to fetch remote data.
+*   Uses **Retrofit 2** as the type-safe HTTP client.
+*   Parses JSON responses into Kotlin data classes using **Gson Converter**.
+*   Implements **Kotlin Coroutines** (`Dispatchers.IO` / `Dispatchers.Main`) for non-blocking network calls.
+*   Features a modern **Material 3 UI** with:
+    *   `RecyclerView` for efficient list rendering.
+    *   `CardView` layouts with rounded corners and shadows (`item_post.xml`).
+    *   `SwipeRefreshLayout` for pull-to-refresh capability.
+    *   `ProgressBar` for loading indicators.
+*   Includes internet permission handling in `AndroidManifest.xml`.
 
 🛠️ **Technologies Used**
 *   Android Studio
-*   Kotlin
-*   Google Maps SDK (Play Services)
-*   XML Layouts (CoordinatorLayout, CardView, FloatingActionButton)
-*   Gradle
+*   Kotlin & Kotlin Coroutines
+*   Retrofit 2 & Gson
+*   RecyclerView & SwipeRefreshLayout
+*   Material Design Components
 
 📂 **Project Structure**
 ```text
-exp11/
+exp12/
 ├── app/
-│   ├── build.gradle.kts (Contains Google Maps dependencies)
+│   ├── build.gradle.kts (Retrofit, Gson, and Coroutine dependencies)
 │   └── src/
 │       └── main/
-│           ├── AndroidManifest.xml (Contains API Key metadata & Permissions)
+│           ├── AndroidManifest.xml (Internet permission)
 │           ├── java/
 │           │   └── com.example.myapplication/
-│           │       └── MainActivity.kt (Implements OnMapReadyCallback)
+│           │       ├── MainActivity.kt (Handles HTTP fetch and RecyclerView binding)
+│           │       ├── ApiService.kt (Retrofit interface for API endpoints)
+│           │       ├── Post.kt (Data model for JSON response)
+│           │       └── PostAdapter.kt (Adapter for RecyclerView)
 │           └── res/
 │               ├── layout/
-│               │   └── activity_main.xml (MapFragment & Overlay UI)
-│               ├── mipmap/
+│               │   ├── activity_main.xml (Toolbar, SwipeRefreshLayout, RecyclerView)
+│               │   └── item_post.xml (CardView item layout)
 │               ├── values/
 │               │   ├── colors.xml
 │               │   ├── strings.xml
@@ -58,4 +62,4 @@ exp11/
 ```
 
 📸 **Output**
-*(Screenshots of the interactive Google Map to be added here)*
+*(Screenshots of the fetched posts list to be added here)*
