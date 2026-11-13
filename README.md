@@ -67,5 +67,16 @@ SmartExpenseTracker/
 └── settings.gradle.kts
 ```
 
-📸 **Output**
-![SmartExpenseTracker Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
+📸 **Output Screenshots**
+
+**1. Dashboard & Reminder Setup**  
+*(Shows the fintech gradient balance card, daily reminder time settings, and balance update input)*  
+![Dashboard Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
+
+**2. Transaction History View**  
+*(Shows previous balance records with formatted dates and times)*  
+![History Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
+
+**3. Balance Verification & Toast Mismatch Alert**  
+*(Demonstrates strict balance verification where entering an incorrect amount triggers a mismatch warning and keeps the alarm active)*  
+![Verification Mismatch Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
