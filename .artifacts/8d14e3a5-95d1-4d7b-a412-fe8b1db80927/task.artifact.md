@@ -1,9 +1,8 @@
-- `[x]` Create task list for Multi-Page Web Services App
-- `[x]` Update `ApiService.kt` with Users and Products endpoints
-- `[x]` Create Product data model and adapter
-- `[x]` Create HomeFragment & layout (Dashboard menu)
-- `[x]` Create UsersFragment & layout (Users list API)
-- `[x]` Create ProductsFragment & layout (Products list API)
-- `[x]` Create UserDetailFragment & layout (Item detail view)
-- `[x]` Update `MainActivity.kt` for Fragment navigation
-- `[x]` Verify build and functionality
+- `[x]` Create task list for Alarm & Balance Verification upgrade
+- `[x]` Update `DatabaseHelper.kt` to include `verification_table` and methods
+- `[x]` Implement `AlarmSoundService.kt` (Foreground Service for continuous MediaPlayer playback)
+- `[x]` Update `ReminderReceiver.kt` to start `AlarmSoundService` and show notification
+- `[x]` Implement `BootReceiver.kt` for BOOT_COMPLETED alarm rescheduling
+- `[x]` Update `MainActivity.kt` with balance verification logic, alarm scheduling, and history display
+- `[x]` Update `AndroidManifest.xml` with required permissions, service, and receivers
+- `[x]` Verify build and test application successfully

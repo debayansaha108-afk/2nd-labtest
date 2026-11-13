@@ -1,35 +1,55 @@
-# Multi-Page Web Services (HTTP Requests) Experiment
+# Upgrade SmartExpenseTracker to Daily Alarm & Balance Verification System
 
-The user requested multiple working pages/screens for the Web Services experiment instead of just a single list page.
+Implement a robust daily alarm system with continuous alarm sound playback (via Foreground Service), SQLite balance verification against the latest saved balance, verification records history, and boot restoration.
 
 ## User Review Required
 
-> [!NOTE]
-> This plan introduces a multi-page Fragment-based navigation structure inside `MainActivity`, providing a Home Dashboard and multiple distinct HTTP request demos (Users API and Products API), plus a Detail View when selecting an item.
+> [!IMPORTANT]
+> This upgrade adds:
+> 1. **`AlarmSoundService.kt`**: A Foreground Service playing continuous alarm sound via `MediaPlayer` until stopped.
+> 2. **`BootReceiver.kt`**: Reschedules the daily alarm after device reboot (`BOOT_COMPLETED`).
+> 3. **Balance Verification Logic in `MainActivity.kt`**: When saving balance while an alarm is active, compares the entered amount with the latest saved balance. If it matches, stops the alarm, cancels notification, logs a verification record in SQLite, and schedules the next alarm. If it doesn't match, keeps the alarm ringing.
+> 4. **Enhanced `DatabaseHelper.kt`**: Adds support for verification records table (`verification_table`).
 
 ## Proposed Changes
 
-### 1. Navigation & Architecture
-- **`MainActivity.kt`**: Acts as the single host activity managing Fragment transactions (Home -> Users / Products -> Detail).
+### 1. Database Layer
+- **`DatabaseHelper.kt`**:
+  - Keep `balance_table`.
+  - Add `verification_table` (`id`, `verified_balance`, `status`, `date`, `time`).
+  - Add methods for inserting and retrieving verification records.
 
-### 2. Fragments & Layouts
-- **`HomeFragment.kt` & `fragment_home.xml`**: Dashboard menu with buttons to navigate to different web service endpoints.
-- **`UsersFragment.kt` & `fragment_users.xml`**: Fetches and displays users from DummyJSON.
-- **`ProductsFragment.kt` & `fragment_products.xml`**: Fetches and displays products from DummyJSON (`https://dummyjson.com/products`).
-- **`UserDetailFragment.kt` & `fragment_user_detail.xml`**: Shows detailed view when a user is clicked.
+### 2. Audio & Background Services
+- **`AlarmSoundService.kt`**:
+  - Foreground Service using `MediaPlayer` (system default alarm sound or ringtone) looping continuously.
+  - Stopped via intent when verification succeeds.
+- **`ReminderReceiver.kt`**:
+  - Triggered by AlarmManager.
+  - Starts `AlarmSoundService` and shows high-priority notification with intent to open `MainActivity`.
+- **`BootReceiver.kt`**:
+  - Listens to `ACTION_BOOT_COMPLETED` to reschedule the daily alarm using saved time in SharedPreferences.
 
-### 3. Data Models & Adapters
-- **`Product.kt`**: Data model for products.
-- **`ProductAdapter.kt`**: Adapter for products RecyclerView.
-- **`UserAdapter.kt`**: Updated with click listener to open `UserDetailFragment`.
+### 3. UI & Verification Logic
+- **`MainActivity.kt`**:
+  - Update "Save Balance" button to check if an alarm/alarm service is active.
+  - Perform verification: compare `et_balance.text.toString().trim()` with `dbHelper.getLatestBalance()`.
+  - If match: stop `AlarmSoundService`, cancel notification, insert verification record (Status: "Verified Successfully"), save new balance record, schedule next alarm.
+  - If mismatch: show error toast/message ("Balance does not match! Please enter the correct remaining balance."), keep alarm ringing.
+  - Display verification history alongside balance history.
+
+### 4. Manifest & Permissions
+- **`AndroidManifest.xml`**:
+  - Add permissions: `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_MEDIA_PLAYBACK`, `RECEIVE_BOOT_COMPLETED`, `WAKE_LOCK`, `POST_NOTIFICATIONS`.
+  - Register `AlarmSoundService` and `BootReceiver`.
 
 ## Verification Plan
 
 ### Automated Tests
-- Build the project (`gradlew assembleDebug`) to ensure all classes, adapters, and XML layouts compile correctly.
+- Build project (`gradlew assembleDebug`) to verify clean compilation.
 
 ### Manual Verification
-- Launch app -> See Home Dashboard.
-- Tap "Fetch Users" -> Opens Users page with live HTTP data and clickable items leading to details.
-- Tap "Fetch Products" -> Opens Products page with live HTTP data from a second endpoint.
-- Use back button to return to Home.
+- Set reminder time.
+- Trigger alarm (or wait for scheduled time / test via intent).
+- Verify continuous alarm sound and notification.
+- Test entering incorrect balance (alarm continues).
+- Test entering correct balance (alarm stops, notification clears, verification logged, next alarm scheduled).

@@ -1,6 +1,6 @@
 # Experiment 12 – Access Web Services using HTTP Requests in Android
 
-📌 **Description**
+📌 **Description**  
 This experiment is developed using Android Studio as part of the Mobile Application Development Lab. It demonstrates how to access web services and consume REST APIs using HTTP requests in an Android application.
 
 The application utilizes **Retrofit** and **Gson** for seamless HTTP networking and JSON deserialization, combined with **Kotlin Coroutines** for asynchronous background execution. The user interface features a modern Material Design layout with a `RecyclerView`, custom `CardView` items, and a `SwipeRefreshLayout` for pull-to-refresh functionality.
@@ -12,14 +12,14 @@ The application utilizes **Retrofit** and **Gson** for seamless HTTP networking 
 
 🚀 **Features**
 *   Performs network HTTP GET requests to fetch remote data.
-*   Uses **Retrofit 2** as the type-safe HTTP client.
-*   Parses JSON responses into Kotlin data classes using **Gson Converter**.
-*   Implements **Kotlin Coroutines** (`Dispatchers.IO` / `Dispatchers.Main`) for non-blocking network calls.
-*   Features a modern **Material 3 UI** with:
-    *   `RecyclerView` for efficient list rendering.
-    *   `CardView` layouts with rounded corners and shadows (`item_post.xml`).
-    *   `SwipeRefreshLayout` for pull-to-refresh capability.
-    *   `ProgressBar` for loading indicators.
+*   Uses Retrofit 2 as the type-safe HTTP client.
+*   Parses JSON responses into Kotlin data classes using Gson Converter.
+*   Implements Kotlin Coroutines (`Dispatchers.IO` / `Dispatchers.Main`) for non-blocking network calls.
+*   Features a modern Material 3 UI with:
+    *   RecyclerView for efficient list rendering.
+    *   CardView layouts with rounded corners and shadows (`item_post.xml`).
+    *   SwipeRefreshLayout for pull-to-refresh capability.
+    *   ProgressBar for loading indicators.
 *   Includes internet permission handling in `AndroidManifest.xml`.
 
 🛠️ **Technologies Used**
@@ -62,4 +62,4 @@ exp12/
 ```
 
 📸 **Output**
-*(Screenshots of the fetched posts list to be added here)*
+![Output Screenshot](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)

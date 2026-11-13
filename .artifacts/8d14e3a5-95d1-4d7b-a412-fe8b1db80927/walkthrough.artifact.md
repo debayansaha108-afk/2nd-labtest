@@ -1,22 +1,22 @@
-# Walkthrough - Multi-Page Web Services (HTTP Requests) Experiment
+# Walkthrough - SmartExpenseTracker Alarm & Balance Verification System Upgrade
 
-I have successfully transformed the app into a robust, multi-page experiment featuring multiple live HTTP endpoints, a dashboard menu, and item detail navigation.
+I have successfully upgraded **SmartExpenseTracker** with a fully working Daily Alarm System, continuous audio playback via Foreground Service, and strict Balance Verification.
 
-## Changes Made
+## Upgraded Components
 
-### 1. Multi-Page Navigation Structure
-- **`MainActivity.kt` & `activity_main.xml`**: Converted into a single-activity fragment host that dynamically swaps between pages (`HomeFragment`, `UsersFragment`, `ProductsFragment`, `UserDetailFragment`).
+### 1. Continuous Alarm Audio & Foreground Service (`AlarmSoundService.kt`)
+- Plays a continuous alarm sound using `MediaPlayer` in a Foreground Service (`mediaPlayback` type).
+- Loops indefinitely until verification succeeds and the service is stopped.
 
-### 2. Dashboard & API Endpoints
-- **`HomeFragment.kt`**: A modern menu screen allowing users to choose between two different HTTP request experiments:
-  1. **Users API**: Fetches user profiles from `https://dummyjson.com/users`.
-  2. **Products API**: Fetches e-commerce products from `https://dummyjson.com/products`.
+### 2. Alarm Trigger & Boot Restoration (`ReminderReceiver.kt` & `BootReceiver.kt`)
+- **`ReminderReceiver`**: Starts `AlarmSoundService` and displays a persistent high-priority notification. Tapping the notification opens `MainActivity`.
+- **`BootReceiver`**: Listens to device reboot (`BOOT_COMPLETED`) and automatically reschedules the daily alarm using saved times in `SharedPreferences`.
 
-### 3. Adapters & Image Loading
-- **`UserAdapter.kt` & `ProductAdapter.kt`**: Modern `RecyclerView` adapters leveraging **Glide** for fast remote image loading and rounded avatars.
-- **`UserDetailFragment.kt`**: A dedicated detail page showing full user information when an item in the Users list is clicked.
+### 3. Strict Balance Verification Logic (`MainActivity.kt` & `DatabaseHelper.kt`)
+- **Balance Verification**: When saving balance while an alarm is ringing, the app compares the entered balance with the latest saved balance.
+  - **Match**: Stops the alarm sound, clears the notification, records a successful verification in `verification_table`, saves the new balance, and schedules the next day's alarm.
+  - **Mismatch**: Shows a mismatch warning toast and **keeps the alarm ringing** until the correct balance is entered.
+- **SQLite Database**: Now maintains both `balance_table` and `verification_table`.
 
 ## Verification Results
-
-### Automated Tests
-- Build successfully completed (`app:assembleDebug` passed with zero errors).
+- **Build Status**: Verified and successfully built (`app:assembleDebug` passed with 0 errors).
