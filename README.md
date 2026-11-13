@@ -69,14 +69,7 @@ SmartExpenseTracker/
 
 📸 **Output Screenshots**
 
-**1. Dashboard & Reminder Setup**  
-*(Shows the fintech gradient balance card, daily reminder time settings, and balance update input)*  
-![Dashboard Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
+<img width="738" height="1600" alt="WhatsApp Image 2026-11-13 at 1 14 03 PM" src="https://github.com/user-attachments/assets/e533ba93-e4a3-4bed-b07d-d544355549c5" />
+<img width="738" height="1600" alt="WhatsApp Image 2026-11-13 at 1 14 04 PM" src="https://github.com/user-attachments/assets/591175bc-883c-41a6-b31c-67f0c4066388" />
+<img width="738" height="1600" alt="WhatsApp Image 2026-11-13 at 1 14 04 PMfgd" src="https://github.com/user-attachments/assets/6a7a5bc7-e8b3-4ebd-a1d7-2171e74e60f5" />
 
-**2. Transaction History View**  
-*(Shows previous balance records with formatted dates and times)*  
-![History Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
-
-**3. Balance Verification & Toast Mismatch Alert**  
-*(Demonstrates strict balance verification where entering an incorrect amount triggers a mismatch warning and keeps the alarm active)*  
-![Verification Mismatch Output](https://github.com/user-attachments/assets/9087668d-4543-4b82-b9b9-4b90647bfc8b)
